@@ -1,0 +1,81 @@
+
+
+import Registration from "./Pages/registration";
+import Otp from "./Pages/otp";
+import Login from "./Pages/login"; // fix import: use your custom Login component
+
+import { Route, Routes } from "react-router-dom";
+import UserProvider from "./Context/UserContext";
+import ProtectedRoute from "./Routes/protectedRoute";
+
+
+
+
+import Unauthorized from "./Pages/Unauthorized";
+import Navbar from "./Pages/Navbar";
+import Home from "./Pages/Home";
+import UploadMovie from "./Pages/uploadMovie";
+import AllMovies from "./Pages/AllMovies";
+
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+import UserMovies from "./Pages/userMovies";
+import Details from "./Pages/details";
+
+
+
+function App() {
+  return (
+    <UserProvider>
+      <Navbar />
+      <Routes>
+        
+        <Route path="/registration" element={<Registration />} />
+        <Route path="/otp" element={<Otp />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/unauthorized" element={<Unauthorized />} />
+        <Route path="/" element={<Home/>}/>
+        
+
+
+        <Route
+          path="/upload"
+          element={
+            <ProtectedRoute role={["admin"]}>
+              <UploadMovie/>
+            </ProtectedRoute>
+          }
+        />
+
+      <Route
+          path="/admin-movie"
+          element={
+            <ProtectedRoute role={["admin"]}>
+              <AllMovies/>
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/all-movie"
+          element={
+            <ProtectedRoute role={["user"]}>
+              <UserMovies/>
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/movie-detail/:id"
+          element={
+            <ProtectedRoute role={["user"]}>
+              <Details/>
+            </ProtectedRoute>
+          }
+        />
+      </Routes>
+    </UserProvider>
+  );
+}
+
+export default App;
